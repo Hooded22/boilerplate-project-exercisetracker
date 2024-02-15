@@ -1,9 +1,12 @@
+const mongoose = require("mongoose");
 const ExerciseSchema = new mongoose.Schema({
-    _id: { type: String, default: () => mongoose.Types.ObjectId().str },
+    _id: { type: mongoose.Schema.ObjectId, auto: true },
     description: String,
     duration: Number,
     date: Date,
     user: { type: String, ref: 'User' },
-});
+}, {versionKey: false});
 
-module.exports = ExerciseSchema
+const ExerciseModel = mongoose.model('Exercise', ExerciseSchema);
+
+module.exports = ExerciseModel

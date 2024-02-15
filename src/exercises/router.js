@@ -1,0 +1,36 @@
+const {Router} = require("express");
+const ExerciseController = require("./controller");
+
+const exercisesRouter = new Router()
+const exercisesController = new ExerciseController()
+
+exercisesRouter.post('/', async (req, res) => {
+    try {
+        const data = req.body;
+        const userId = req.params.userId;
+        const userData = res.locals.currentUser;
+
+
+        const newExerciseData = await exercisesController.addExercise(data, userId);
+        const {_id, ...newExerciseDataObj} = newExerciseData.toObject();
+        newExerciseDataObj.date = newExerciseDataObj.date.toDateString();
+
+        return res.status(200).json( {...userData, ...newExerciseDataObj})
+    } catch(e) {
+        console.error(e)
+        return res.status(400).send(e)
+    }
+})
+
+exercisesRouter.get('/', async (req, res) => {
+    try {
+        const userId = req.params.userId
+        const exercises = await exercisesController.getExerciseForUserID(userId);
+
+        res.status(200).json(exercises);
+    } catch (e) {
+        res.status(400).send(e);
+    }
+})
+
+module.exports = exercisesRouter

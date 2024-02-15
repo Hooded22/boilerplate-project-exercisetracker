@@ -1,8 +1,10 @@
 const {Router} = require("express");
 const UserController = require("./controller");
+const exercisesRouter = require("../exercises/router");
 
 const usersRouter = Router();
 const usersController = new UserController();
+
 
 usersRouter.post('/', async (req, res) => {
     try {
@@ -35,5 +37,13 @@ usersRouter.get('/:id', async (req, res) => {
         res.status(400).send(e);
     }
 });
+
+usersRouter.use('/:userId/exercises', async (req, res, next) => {
+    const currentUserData = await usersController.getUserById(req.params.userId);
+    res.locals.currentUser = currentUserData.toObject();
+
+    next()
+})
+usersRouter.use('/:userId/exercises', exercisesRouter)
 
 module.exports = usersRouter
