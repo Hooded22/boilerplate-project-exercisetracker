@@ -2,13 +2,10 @@ const mongoose = require("mongoose");
 const LogSchema = new mongoose.Schema({
     _id: { type: mongoose.Schema.ObjectId, auto: true },
     user: { type: String, ref: 'User' },
-    log: [{ type: String, ref: 'Exercise' }],
-    count: { type: Number, default: 0 },
-});
+    log: [{ type: String, ref: 'Exercise', default: [] }],
+    count: {type: Number, default: 0}
+}, {versionKey: false});
 
-LogSchema.pre('save', function(next) {
-    this.count = this.log.length;
-    next();
-});
+const LogModel = mongoose.model('Log', LogSchema);
 
-module.exports = LogSchema
+module.exports = LogModel
