@@ -43,7 +43,7 @@ usersRouter.get('/:id', async (req, res) => {
     }
 });
 
-usersRouter.use('/:userId/exercises', async (req, res, next) => {
+usersRouter.use('/:userId/', async (req, res, next) => {
     const currentUserData = await usersController.getUserById(req.params.userId);
     res.locals.currentUser = currentUserData.toObject();
 

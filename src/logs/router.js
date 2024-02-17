@@ -2,15 +2,20 @@ const {Router} = require("express");
 const LogController = require("./controller");
 
 
-const logRouter = Router();
+const logRouter = Router({mergeParams: true})
 const logController = new LogController();
 
 logRouter.get('/', async (req, res) => {
     try {
-        const userId = req.params.userId
-        const logs = await logController.getAllLogs(userId);
+        const userData = res.locals.currentUser;
 
-        res.status(200).json(logs);
+        const from = req.query.from;
+        const to = req.query.to;
+        const limit = req.query.limit;
+        const userLog = await logController.getAllUsersLogs(userData, from, to, limit);
+
+
+        res.status(200).json(userLog);
     } catch (e) {
         res.status(400).send(e);
     }
