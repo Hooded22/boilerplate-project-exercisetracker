@@ -1,4 +1,3 @@
-const LogModel = require("./model");
 const ExerciseController = require("../exercises/controller");
 
 
@@ -25,32 +24,6 @@ class LogController extends ExerciseController {
             throw new Error()
         }
     }
-
- async createEmptyLog(userId) {
-     try {
-         const logToSave = new LogModel({user: userId })
-         return  await logToSave.save();
-
-     } catch (e) {
-         throw new Error(e);
-     }
- }
-
- async addExerciseToLog(exerciseId, userId) {
-     try {
-         const log = await LogModel.findOneAndUpdate(
-             {user: userId},
-             {$push: {log: exerciseId}, $inc: {count: 1}},
-             {new: true}
-         )
-
-         console.log("LOG: ", log);
-         return log
-     } catch (e) {
-        console.error(e)
-        throw new Error(e);
-     }
- }
 }
 
 module.exports = LogController

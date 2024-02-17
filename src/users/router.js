@@ -1,20 +1,16 @@
 const {Router} = require("express");
 const UserController = require("./controller");
 const exercisesRouter = require("../exercises/router");
-const LogController = require("../logs/controller");
 const logRouter = require("../logs/router");
 
 const usersRouter = Router();
 const usersController = new UserController();
-const logsController = new LogController();
 
 
 usersRouter.post('/', async (req, res) => {
     try {
         const data = req.body;
         const newUserData = await usersController.addUser(data)
-
-        await logsController.createEmptyLog(newUserData._id)
 
         res.status(200).json(newUserData)
     } catch (e) {

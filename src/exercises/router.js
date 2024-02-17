@@ -17,8 +17,6 @@ exercisesRouter.post('/', async (req, res) => {
         const {_id, ...newExerciseDataObj} = newExerciseData.toObject();
         newExerciseDataObj.date = exercisesController.transformExerciseDateToString(newExerciseDataObj.date)
 
-        await logsController.addExerciseToLog(_id, userId)
-
         return res.status(200).json( {...userData, ...newExerciseDataObj})
     } catch(e) {
         console.error(e)
